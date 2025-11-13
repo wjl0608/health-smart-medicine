@@ -4,22 +4,18 @@ import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.fawnyr.healthsmartmedicine.annotation.AuthCheck;
 import com.fawnyr.healthsmartmedicine.common.BaseResponse;
 import com.fawnyr.healthsmartmedicine.common.DeleteRequest;
-import com.fawnyr.healthsmartmedicine.common.PageRequest;
 import com.fawnyr.healthsmartmedicine.common.ResultUtils;
 import com.fawnyr.healthsmartmedicine.constant.UserConstant;
 import com.fawnyr.healthsmartmedicine.exception.ErrorCode;
 import com.fawnyr.healthsmartmedicine.exception.ThrowUtils;
 import com.fawnyr.healthsmartmedicine.model.dto.user.*;
 import com.fawnyr.healthsmartmedicine.model.entity.User;
-import com.fawnyr.healthsmartmedicine.model.enums.UserRoleEnum;
-import com.fawnyr.healthsmartmedicine.model.vo.LoginUserVO;
-import com.fawnyr.healthsmartmedicine.model.vo.UserVO;
+import com.fawnyr.healthsmartmedicine.model.vo.user.LoginUserVO;
+import com.fawnyr.healthsmartmedicine.model.vo.user.UserVO;
 import com.fawnyr.healthsmartmedicine.service.UserService;
-import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.annotation.Resource;
 import jakarta.servlet.http.HttpServletRequest;
 import lombok.extern.slf4j.Slf4j;
-import org.apache.ibatis.annotations.Delete;
 import org.springframework.web.bind.annotation.*;
 
 @Slf4j
@@ -113,6 +109,7 @@ public class UserController {
         UserVO userVO = userService.getUserVO(user);
         return ResultUtils.success(userVO);
     }
+
     //删除用户（管理员）
     @DeleteMapping("/delete")
     @AuthCheck(mustRole = UserConstant.ADMIN_ROLE)
@@ -121,6 +118,7 @@ public class UserController {
         Boolean result = userService.removeById(deleteRequest.getId());
         return ResultUtils.success(result);
     }
+
     //更新用户（管理员）
     @PostMapping("/update")
     @AuthCheck(mustRole = UserConstant.ADMIN_ROLE)
@@ -141,7 +139,6 @@ public class UserController {
         ThrowUtils.throwIf(userQueryRequest == null, ErrorCode.PARAMS_ERROR);
         Page<UserVO> page = userService.listUserVOByPage(userQueryRequest);
         return ResultUtils.success(page);
-
     }
 
 }

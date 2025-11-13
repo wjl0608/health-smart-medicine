@@ -1,8 +1,7 @@
-package com.fawnyr.healthsmartmedicine.model.vo;
+package com.fawnyr.healthsmartmedicine.model.vo.user;
 
 import com.baomidou.mybatisplus.annotation.TableField;
 import com.baomidou.mybatisplus.annotation.TableId;
-import com.baomidou.mybatisplus.annotation.TableLogic;
 import com.baomidou.mybatisplus.annotation.TableName;
 import lombok.Data;
 
@@ -21,7 +20,6 @@ public class LoginUserVO implements Serializable {
     /**
      * id
      */
-    @TableId(type = ASSIGN_ID)
     private Long id;
 
     /**
@@ -79,6 +77,5 @@ public class LoginUserVO implements Serializable {
      */
     private Date updateTime;
 
-    @TableField(exist = false)
     private static final long serialVersionUID = 1L;
 }

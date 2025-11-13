@@ -2,22 +2,19 @@ package com.fawnyr.healthsmartmedicine.service.impl;
 
 import cn.hutool.core.util.ObjectUtil;
 import cn.hutool.core.util.StrUtil;
-import com.baomidou.mybatisplus.core.conditions.Wrapper;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
-import com.fawnyr.healthsmartmedicine.common.DeleteRequest;
-import com.fawnyr.healthsmartmedicine.common.PageRequest;
 import com.fawnyr.healthsmartmedicine.constant.UserConstant;
 import com.fawnyr.healthsmartmedicine.exception.BusinessException;
 import com.fawnyr.healthsmartmedicine.exception.ErrorCode;
 import com.fawnyr.healthsmartmedicine.exception.ThrowUtils;
 import com.fawnyr.healthsmartmedicine.mapper.UserMapper;
 import com.fawnyr.healthsmartmedicine.model.dto.user.*;
+import com.fawnyr.healthsmartmedicine.model.entity.Medicine;
 import com.fawnyr.healthsmartmedicine.model.entity.User;
-import com.fawnyr.healthsmartmedicine.model.enums.UserRoleEnum;
-import com.fawnyr.healthsmartmedicine.model.vo.LoginUserVO;
-import com.fawnyr.healthsmartmedicine.model.vo.UserVO;
+import com.fawnyr.healthsmartmedicine.model.vo.user.LoginUserVO;
+import com.fawnyr.healthsmartmedicine.model.vo.user.UserVO;
 import com.fawnyr.healthsmartmedicine.service.UserService;
 import jakarta.servlet.http.HttpServletRequest;
 import org.springframework.beans.BeanUtils;
@@ -25,7 +22,6 @@ import org.springframework.stereotype.Service;
 import org.springframework.util.DigestUtils;
 
 import java.util.ArrayList;
-import java.util.Date;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -218,6 +214,9 @@ public class UserServiceImpl extends ServiceImpl<UserMapper, User>
     public Boolean updateUser(UserUpdateRequest userUpdateRequest) {
         User user = new User();
         BeanUtils.copyProperties(userUpdateRequest,user);
+        Long id = user.getId();
+        User byId = this.getById(id);
+        ThrowUtils.throwIf(byId==null, ErrorCode.PARAMS_ERROR,"数据不存在");
         boolean result = this.updateById(user);
         ThrowUtils.throwIf(!result,ErrorCode.OPERATION_ERROR);
         return true;

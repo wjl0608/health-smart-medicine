@@ -49,4 +49,6 @@ public class UserUpdateRequest implements Serializable {
      * 头像
      */
     private String imgPath;
+
+    private static final long serialVersionUID = 1L;
 }
