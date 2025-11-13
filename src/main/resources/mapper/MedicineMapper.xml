@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.fawnyr.healthsmartmedicine.mapper.MedicineMapper">
+
+    <resultMap id="BaseResultMap" type="com.fawnyr.healthsmartmedicine.model.entity.Medicine">
+            <id property="id" column="id" jdbcType="BIGINT"/>
+            <result property="medicineName" column="medicineName" jdbcType="VARCHAR"/>
+            <result property="keyword" column="keyword" jdbcType="VARCHAR"/>
+            <result property="medicineEffect" column="medicineEffect" jdbcType="VARCHAR"/>
+            <result property="medicineBrand" column="medicineBrand" jdbcType="VARCHAR"/>
+            <result property="interaction" column="interaction" jdbcType="VARCHAR"/>
+            <result property="taboo" column="taboo" jdbcType="VARCHAR"/>
+            <result property="useAge" column="useAge" jdbcType="VARCHAR"/>
+            <result property="medicineType" column="medicineType" jdbcType="VARCHAR"/>
+            <result property="imgPath" column="imgPath" jdbcType="VARCHAR"/>
+            <result property="medicinePrice" column="medicinePrice" jdbcType="DECIMAL"/>
+            <result property="editTime" column="editTime" jdbcType="TIMESTAMP"/>
+            <result property="createTime" column="createTime" jdbcType="TIMESTAMP"/>
+            <result property="updateTime" column="updateTime" jdbcType="TIMESTAMP"/>
+            <result property="isDelete" column="isDelete" jdbcType="TINYINT"/>
+    </resultMap>
+
+    <sql id="Base_Column_List">
+        id,medicineName,keyword,
+        medicineEffect,medicineBrand,interaction,
+        taboo,useAge,medicineType,
+        imgPath,medicinePrice,editTime,
+        createTime,updateTime,isDelete
+    </sql>
+</mapper>
