@@ -11,7 +11,6 @@ import com.fawnyr.healthsmartmedicine.exception.ThrowUtils;
 import com.fawnyr.healthsmartmedicine.model.dto.illness.IllnessAddRequest;
 import com.fawnyr.healthsmartmedicine.model.dto.illness.IllnessQueryRequest;
 import com.fawnyr.healthsmartmedicine.model.dto.illness.IllnessUpdateRequest;
-import com.fawnyr.healthsmartmedicine.model.entity.Illness;
 import com.fawnyr.healthsmartmedicine.model.vo.illness.IllnessVO;
 import com.fawnyr.healthsmartmedicine.service.IllnessService;
 import jakarta.annotation.Resource;
@@ -68,7 +67,7 @@ public class IllnessController {
     }
 
     /**
-     * 根据主键ID修改疾病（管理员）
+     * 修改疾病（管理员）
      * @param illnessUpdateRequest
      * @return
      */
@@ -88,25 +87,12 @@ public class IllnessController {
      */
     @GetMapping("/get")
     @AuthCheck(mustRole = UserConstant.ADMIN_ROLE)
-    public BaseResponse<Illness> getIllness(Long id){
+    public BaseResponse<IllnessVO> getIllness(Long id){
         ThrowUtils.throwIf(id<=0, ErrorCode.PARAMS_ERROR);
-        Illness illness = illnessService.getById(id);
-        ThrowUtils.throwIf(illness==null, ErrorCode.NOT_FOUND_ERROR);
-        return ResultUtils.success(illness);
+        IllnessVO illnessVO = illnessService.getIllness(id);
+        return ResultUtils.success(illnessVO);
     }
 
-    /**
-     * 根据主键ID查询疾病
-     * @param id
-     * @return
-     */
-    @GetMapping("/get/vo")
-    public BaseResponse<IllnessVO> getIllnessVO(Long id){
-        ThrowUtils.throwIf(id<=0, ErrorCode.PARAMS_ERROR);
-        Illness illness = this.getIllness(id).getData();
-        ThrowUtils.throwIf(illness==null, ErrorCode.NOT_FOUND_ERROR);
-        return ResultUtils.success(illnessService.getIllnessVO(illness));
-    }
 
     //分页查询疾病
     @PostMapping("/page")

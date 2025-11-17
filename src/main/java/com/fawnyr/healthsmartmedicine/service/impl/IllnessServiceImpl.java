@@ -10,9 +10,18 @@ import com.fawnyr.healthsmartmedicine.model.dto.illness.IllnessAddRequest;
 import com.fawnyr.healthsmartmedicine.model.dto.illness.IllnessQueryRequest;
 import com.fawnyr.healthsmartmedicine.model.dto.illness.IllnessUpdateRequest;
 import com.fawnyr.healthsmartmedicine.model.entity.Illness;
+import com.fawnyr.healthsmartmedicine.model.entity.IllnessKind;
+import com.fawnyr.healthsmartmedicine.model.entity.IllnessMedicine;
+import com.fawnyr.healthsmartmedicine.model.entity.Medicine;
 import com.fawnyr.healthsmartmedicine.model.vo.illness.IllnessVO;
+import com.fawnyr.healthsmartmedicine.model.vo.medicine.MedicineVO;
+import com.fawnyr.healthsmartmedicine.service.IllnessKindService;
+import com.fawnyr.healthsmartmedicine.service.IllnessMedicineService;
 import com.fawnyr.healthsmartmedicine.service.IllnessService;
 import com.fawnyr.healthsmartmedicine.mapper.IllnessMapper;
+import com.fawnyr.healthsmartmedicine.service.MedicineService;
+import jakarta.annotation.Resource;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.BeanUtils;
 import org.springframework.stereotype.Service;
 
@@ -26,10 +35,16 @@ import java.util.stream.Collectors;
 * @description 针对表【illness(疾病)】的数据库操作Service实现
 * @createDate 2025-11-17 13:52:53
 */
+@Slf4j
 @Service
 public class IllnessServiceImpl extends ServiceImpl<IllnessMapper, Illness>
     implements IllnessService{
-
+    @Resource
+    MedicineService medicineService;
+    @Resource
+    IllnessKindService illnessKindService;
+    @Resource
+    IllnessMedicineService illnessMedicineService;
     /**
      * 新增药品
      * @param illnessAddRequest
@@ -78,7 +93,7 @@ public class IllnessServiceImpl extends ServiceImpl<IllnessMapper, Illness>
             return null;
         IllnessVO illnessVO = new IllnessVO();
         BeanUtils.copyProperties(illness,illnessVO);
-        return illnessVO;
+        return fillIllnessVO(illnessVO);
     }
 
     /**
@@ -129,6 +144,47 @@ public class IllnessServiceImpl extends ServiceImpl<IllnessMapper, Illness>
         queryWrapper.orderBy(ObjectUtil.isNotEmpty(sortOrder),sortOrder.equals("ascend"),sortField);
         return queryWrapper;
     }
+
+    /**
+     * 查询疾病
+     * @param id
+     * @return
+     */
+    @Override
+    public IllnessVO getIllness(Long id) {
+        Illness illness = this.getById(id);
+        ThrowUtils.throwIf(illness==null,ErrorCode.NOT_FOUND_ERROR);
+        IllnessVO illnessVO = new IllnessVO();
+        BeanUtils.copyProperties(illness,illnessVO);
+        IllnessVO result = fillIllnessVO(illnessVO);
+        return result;
+    }
+
+    private IllnessVO fillIllnessVO(IllnessVO illnessVO) {
+        Long illNessId = illnessVO.getId();
+        Long kingId = illnessVO.getKingId();
+        IllnessKind illnessKind = illnessKindService.getById(kingId);
+        ThrowUtils.throwIf(illnessKind==null,ErrorCode.NOT_FOUND_ERROR);
+        illnessVO.setKingName(illnessKind.getName());
+        illnessVO.setKingInfo(illnessKind.getInfo());
+        QueryWrapper<IllnessMedicine> queryWrapper = new QueryWrapper<>();
+        queryWrapper.eq(illNessId!=0,"illnessId",illNessId);
+        List<Long> illnessMedicineIds = illnessMedicineService.listObjs(queryWrapper);
+        List<MedicineVO> medicineVOList = null;
+        if(illnessMedicineIds==null)
+            illnessVO.setMedicineVOList(medicineVOList);
+        else{
+            medicineVOList = new ArrayList<>();
+            for(Long illnessMedicineId:illnessMedicineIds){
+                IllnessMedicine illnessMedicine = illnessMedicineService.getById(illnessMedicineId);
+                Medicine medicine = medicineService.getById(illnessMedicine.getMedicineId());
+                medicineVOList.add(medicineService.getMedicineVO(medicine));
+            }
+            illnessVO.setMedicineVOList(medicineVOList);
+        }
+        return illnessVO;
+    }
+
 
 }
 

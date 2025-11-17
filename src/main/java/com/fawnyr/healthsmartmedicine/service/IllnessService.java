@@ -51,4 +51,10 @@ public interface IllnessService extends IService<Illness> {
      */
     QueryWrapper<Illness> getQueryWrapper(IllnessQueryRequest illnessQueryRequest);
 
+    /**
+     * 查询疾病
+     * @param id
+     * @return
+     */
+    IllnessVO getIllness(Long id);
 }

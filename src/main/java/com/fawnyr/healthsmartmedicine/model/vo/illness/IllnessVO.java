@@ -4,10 +4,13 @@ import com.baomidou.mybatisplus.annotation.IdType;
 import com.baomidou.mybatisplus.annotation.TableField;
 import com.baomidou.mybatisplus.annotation.TableId;
 import com.baomidou.mybatisplus.annotation.TableName;
+import com.fawnyr.healthsmartmedicine.model.entity.Medicine;
+import com.fawnyr.healthsmartmedicine.model.vo.medicine.MedicineVO;
 import lombok.Data;
 
 import java.io.Serializable;
 import java.util.Date;
+import java.util.List;
 
 @Data
 public class IllnessVO implements Serializable {
@@ -45,6 +48,21 @@ public class IllnessVO implements Serializable {
      * 创建时间
      */
     private Date createTime;
+
+    /**
+     * 种类名称
+     */
+    private String kingName;
+
+    /**
+     * 种类描述
+     */
+    private String kingInfo;
+
+    /**
+     * 疾病关联的药品
+     */
+    private List<MedicineVO> medicineVOList;
 
     private static final long serialVersionUID = 1L;
 }
