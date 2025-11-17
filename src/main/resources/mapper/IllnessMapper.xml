@@ -1,0 +1,26 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.fawnyr.healthsmartmedicine.mapper.IllnessMapper">
+
+    <resultMap id="BaseResultMap" type="com.fawnyr.healthsmartmedicine.model.entity.Illness">
+            <id property="id" column="id" jdbcType="BIGINT"/>
+            <result property="kingId" column="kingId" jdbcType="BIGINT"/>
+            <result property="illnessName" column="illnessName" jdbcType="VARCHAR"/>
+            <result property="includeReason" column="includeReason" jdbcType="VARCHAR"/>
+            <result property="illnessSymptom" column="illnessSymptom" jdbcType="VARCHAR"/>
+            <result property="specialSymptom" column="specialSymptom" jdbcType="VARCHAR"/>
+            <result property="editTime" column="editTime" jdbcType="TIMESTAMP"/>
+            <result property="createTime" column="createTime" jdbcType="TIMESTAMP"/>
+            <result property="updateTime" column="updateTime" jdbcType="TIMESTAMP"/>
+            <result property="isDelete" column="isDelete" jdbcType="TINYINT"/>
+    </resultMap>
+
+    <sql id="Base_Column_List">
+        id,kingId,illnessName,
+        includeReason,illnessSymptom,specialSymptom,
+        editTime,createTime,updateTime,
+        isDelete
+    </sql>
+</mapper>

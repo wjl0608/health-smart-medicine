@@ -50,6 +50,7 @@ public class MedicineController {
     public BaseResponse<Boolean> deleteMedicine(@RequestBody DeleteRequest deleteRequest){
         ThrowUtils.throwIf(deleteRequest==null, ErrorCode.PARAMS_ERROR);
         boolean result = medicineService.removeById(deleteRequest.getId());
+        ThrowUtils.throwIf(!result, ErrorCode.OPERATION_ERROR);
         return ResultUtils.success(result);
     }
 
@@ -63,6 +64,7 @@ public class MedicineController {
     public BaseResponse<Boolean> deleteListMedicine(@RequestParam List<Serializable> ids){
         ThrowUtils.throwIf(ids==null, ErrorCode.PARAMS_ERROR);
         boolean result = medicineService.removeByIds(ids);
+        ThrowUtils.throwIf(!result, ErrorCode.OPERATION_ERROR);
         return ResultUtils.success(result);
     }
 

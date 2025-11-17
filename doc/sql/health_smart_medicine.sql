@@ -45,3 +45,46 @@ create table if not exists medicine
     isDelete       tinyint      default 0                 not null comment '是否删除',
     INDEX idx_medicineName (medicineName)
 )comment '药品' collate = utf8mb4_unicode_ci;
+
+-- 疾病表
+create table if not exists illness
+(
+    id              bigint auto_increment comment 'id' primary key,
+    kingId          bigint default null                    null comment '种类id',
+    illnessName     varchar(256)                           not null comment '疾病名称',
+    includeReason   mediumtext                             null comment '诱发因素',
+    illnessSymptom  mediumtext                             null comment '疾病症状',
+    specialSymptom  mediumtext                             null comment '特殊症状',
+    editTime        datetime     default CURRENT_TIMESTAMP not null comment '编辑时间',
+    createTime      datetime     default CURRENT_TIMESTAMP not null comment '创建时间',
+    updateTime      datetime     default CURRENT_TIMESTAMP not null on update CURRENT_TIMESTAMP comment '更新时间',
+    isDelete        tinyint      default 0                 not null comment '是否删除',
+    INDEX idx_medicineName (illnessName)
+)comment '疾病' collate = utf8mb4_unicode_ci;
+
+-- 疾病种类表
+create table if not exists illness_kind
+(
+    id             bigint auto_increment comment 'id' primary key,
+    name           varchar(256)                           not null comment '分类名称',
+    info           varchar(256)                           not null comment '描述',
+    editTime       datetime     default CURRENT_TIMESTAMP not null comment '编辑时间',
+    createTime     datetime     default CURRENT_TIMESTAMP not null comment '创建时间',
+    updateTime     datetime     default CURRENT_TIMESTAMP not null on update CURRENT_TIMESTAMP comment '更新时间',
+    isDelete       tinyint      default 0                 not null comment '是否删除',
+    INDEX idx_medicineName (name)
+)comment '疾病种类' collate = utf8mb4_unicode_ci;
+
+-- 疾病-药物表
+create table if not exists illness_medicine
+(
+    id             bigint auto_increment comment 'id' primary key,
+    illnessId      bigint default null                    null comment '病id',
+    medicineId     bigint default null                   null comment '药品id',
+    editTime       datetime     default CURRENT_TIMESTAMP not null comment '编辑时间',
+    createTime     datetime     default CURRENT_TIMESTAMP not null comment '创建时间',
+    updateTime     datetime     default CURRENT_TIMESTAMP not null on update CURRENT_TIMESTAMP comment '更新时间',
+    isDelete       tinyint      default 0                 not null comment '是否删除'
+)comment '疾病-药物' collate = utf8mb4_unicode_ci;
+
+
